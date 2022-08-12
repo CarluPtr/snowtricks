@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <section class="my-5">
+        <a href="{{ path('main_home') }}">Homepage</a>
+        <a href="{{ path('app_question_show', {'slug': 'articles'}) }}">Slug</a>
+
+        <div class="container">
+            <div class="row justify-content-around">
+                {% for figure in figures %}
+                <div class="col-12 col-md-6 col-lg-3 my-2">
+                    <div class="card-figure">
+                        <img src="{{ asset('images/snowboard-' ~ randomclass ~ '.png') }}" alt="" class="card__img alternative-{{ randomclass }}">
+
+                        <!-- <div class="card__content">  -->
+                        <div class="card__data">
+                            <p class="card__title fw-bold">{{ figure.name }}</p>
+                            <p class="card__preci"><span class="fw-light">par</span> Carlu Pietri</p>
+                            <p class="card__description">{{ figure.description }}</p>
+                            <a href="#" class="card__button">En lire plus</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
