@@ -1,19 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<section>
-    <a href="{{ path('main_home') }}">Homepage</a>
-    <a href="{{ path('app_question_show', {'slug': 'articles'}) }}">Slug</a>
-    <a href="{{ path('tricks_list') }}">Tricks</a>
-
-    <ul>
-        <li>
-            coucou
-        </li>
-        <li>
-            ça va ?
-        </li>
-    </ul>
-
+<section id="main-section">
+    <div class="div-wrapper">
+        <img src="{{ asset('images/mountains.png') }}" class="mountains">
+    </div>
 </section>
 {% endblock %}

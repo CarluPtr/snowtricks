@@ -2,6 +2,7 @@
 
 :root {
     /*===== Colores =====*/
+    --blue-default: #009bde;
     --first-color: #1a211f;
     --white-color: #E9EAEC;
     --card-color-1: #8bccfd;
@@ -13,9 +14,35 @@
     --normal-font-size: 1rem;
     --small-font-size: .875rem;
 }
+
+nav{
+    z-index: 1100;
+}
+.navbar-brand{
+    color: var(--blue-default);
+}
+.navbar-brand:hover{
+    color: var(--card-color-2);
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     color: #444;
+}
+#main-section{
+    height: 75vh;
+    background-image:linear-gradient(to top, var(--card-color-1), var(--card-color-2));
+}
+.div-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.mountains{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
 }
 
 .jumbotron-img {
