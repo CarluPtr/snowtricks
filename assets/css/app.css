@@ -29,6 +29,7 @@ body {
     font-family: 'Poppins', sans-serif;
     color: #444;
 }
+
 #main-section{
     height: 75vh;
     background-image:linear-gradient(to top, var(--card-color-1), var(--card-color-2));
@@ -246,9 +247,15 @@ img {
     transition: .2s;
     opacity: 0;
 }
+@keyframes fade {
+    0%   { background-color: var(--first-color); }
+    100% { background-color: white; }
+}
 
 .card__button:hover {
-    box-shadow: 0 18px 40px -12px var(--card-color);
+    color: var(--blue-default);
+    animation: fade 0.3s ease-in-out;
+    background-color: white;
 }
 
 .card__img,
