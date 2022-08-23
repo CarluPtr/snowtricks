@@ -14,7 +14,31 @@
     --normal-font-size: 1rem;
     --small-font-size: .875rem;
 }
-
+.primary-text{
+    color: var(--blue-default);
+}
+.btn-primary{
+    background-color: var(--blue-default);
+    border: var(--blue-default);
+}
+.btn-primary:hover{
+    display: inline-block;
+    background-color: white;
+    box-shadow: 0 0 0 1px var(--blue-default),
+    inset 0 0 0 1px #fff;
+    color: var(--blue-default);
+}
+.btn-light{
+    color: var(--blue-default);
+}
+.btn-light:hover{
+    background-color: var(--blue-default);
+    border: var(--blue-default);
+    color: white;
+}
+.btn-outline-light:hover{
+    color: var(--blue-default);
+}
 nav{
     z-index: 1100;
 }
@@ -31,13 +55,19 @@ body {
 }
 
 #main-section{
-    height: 75vh;
+    height: 80vh;
     background-image:linear-gradient(to top, var(--card-color-1), var(--card-color-2));
 }
 .div-wrapper {
     position: relative;
     height: 100%;
     width: 100%;
+    display: table;
+}
+.hero{
+    display: table-cell;
+    vertical-align: middle;
+    padding-bottom : 148px;
 }
 .mountains{
     width: 100%;

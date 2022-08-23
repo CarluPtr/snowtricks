@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Twig\Environment;
 
 class TricksController extends AbstractController
@@ -29,16 +30,12 @@ class TricksController extends AbstractController
     /**
      * @Route("/create", name="test")
      */
-    public function new(EntityManagerInterface $entityManager){
+    public function new(EntityManagerInterface $entityManager, SluggerInterface $slugger){
         $figure = new Figure();
         $figure->setName('360 Backflip')
             ->setDescription('La meilleure figure du monde')
             ->setSlug(
-                strtolower(
-                    str_replace(
-                ' ', '-', $figure->getName()
-                    )
-                )
+                $slugger->slug($figure->getName())->lower()
             );
         $entityManager->persist($figure);
         $entityManager->flush();
