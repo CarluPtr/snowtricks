@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Figure;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +33,13 @@ class TricksController extends AbstractController
      */
     public function new(EntityManagerInterface $entityManager, SluggerInterface $slugger){
         $figure = new Figure();
+        $user = $this->getDoctrine()->getRepository(User::class)->find(2);
         $figure->setName('360 Backflip')
             ->setDescription('La meilleure figure du monde')
             ->setSlug(
                 $slugger->slug($figure->getName())->lower()
-            );
+            )
+            ->setUser($user);
         $entityManager->persist($figure);
         $entityManager->flush();
 

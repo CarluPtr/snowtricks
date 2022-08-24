@@ -1,20 +1,34 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Log in!{% endblock %}
+
 {% block content %}
 <section class="pt-5">
     <div class="container">
-            <form action="" method="post" class="row g-3">
-                <h2 class="text-center primary-text">Connexion</h2>
-                <div class="form-group">
-                    <input type="email" name="email" class="form-control" placeholder="Email" required="required" autocomplete="off">
+        <form action="" method="post" class="row g-3">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
                 </div>
-                <div class="form-group">
-                    <input type="password" name="password" class="form-control" placeholder="Mot de passe" required="required" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
-                </div>   
-            </form>
-    </div>            
-</section>            
+            {% endif %}
+
+            <h2 class="text-center primary-text">Connexion</h2>
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Email" required="required" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Mot de passe" required="required" autocomplete="off">
+            </div>
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </div>
+        </form>
+    </div>
+</section>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Figure::class, mappedBy="user")
+     */
+    private $figures;
+
+    /**
+     * @ORM\Column(type="string", length=144)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=144)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=144)
+     */
+    private $username;
+
+    public function __construct()
+    {
+        $this->figures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -67,7 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -122,5 +149,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Figure>
+     */
+    public function getFigures(): Collection
+    {
+        return $this->figures;
+    }
+
+    public function addFigure(Figure $figure): self
+    {
+        if (!$this->figures->contains($figure)) {
+            $this->figures[] = $figure;
+            $figure->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFigure(Figure $figure): self
+    {
+        if ($this->figures->removeElement($figure)) {
+            // set the owning side to null (unless already changed)
+            if ($figure->getUser() === $this) {
+                $figure->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 }
