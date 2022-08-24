@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Figure;
 use App\Entity\User;
+use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,6 @@ class TricksController extends AbstractController
         return $this->render('tricks/list.html.twig', [
             'title' => 'Snow Tricks',
             'figures' => $figures,
-            'randomclass' => rand(1, 2),
         ]);
     }
     /**
@@ -33,9 +33,9 @@ class TricksController extends AbstractController
      */
     public function new(EntityManagerInterface $entityManager, SluggerInterface $slugger){
         $figure = new Figure();
-        $user = $this->getDoctrine()->getRepository(User::class)->find(2);
-        $figure->setName('360 Backflip')
-            ->setDescription('La meilleure figure du monde')
+        $user = $this->getUser();
+        $figure->setName('Super flip 180')
+            ->setDescription('hrr rh rrhrdr hrrh efeg e')
             ->setSlug(
                 $slugger->slug($figure->getName())->lower()
             )

@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,23 +38,23 @@ class SecurityController extends AbstractController
     /**
      * @Route("/create-account", name="account_creation")
      */
-    public function createUser(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function createUser(Request $request,EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        if (!empty($_POST['prenom']) && !empty($_POST['nom']) &&  !empty($_POST['username']) && !empty($_POST['email'])&& !empty($_POST['password']) && !empty($_POST['password_retype']))
+        if (!empty($request->get('prenom')) && !empty($request->get('nom')) &&  !empty($request->get('username')) && !empty($request->get('email'))&& !empty($request->get('password')) && !empty($request->get('password_retype')))
         {
-            if ($_POST['password'] === $_POST['password_retype']) {
+            if ($request->get('password') === $request->get('password_retype')) {
 
                 $user = new User();
-                $password = $_POST['password'];
+                $password = $request->get('password');
                 $hashedPassword = $passwordHasher->hashPassword(
                     $user,
                     $password
                 );
-                $user->setEmail($_POST['email'])
+                $user->setEmail($request->get('email'))
                     ->setPassword($hashedPassword)
-                    ->setName($_POST['nom'])
-                    ->setFirstName($_POST['prenom'])
-                    ->setUsername($_POST['username']);
+                    ->setName($request->get('nom'))
+                    ->setFirstName($request->get('prenom'))
+                    ->setUsername($request->get('username'));
                 $entityManager->persist($user);
                 $entityManager->flush();
 

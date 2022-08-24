@@ -7,7 +7,7 @@
                 {% for figure in figures %}
                 <div class="col-12 col-md-6 col-lg-3 my-2">
                     <div class="card-figure">
-                        <img src="{{ asset('images/snowboard-' ~ randomclass ~ '.png') }}" alt="" class="card__img alternative-{{ randomclass }}">
+                        <img src="{{ asset('images/snowboard-' ~ random(1,2) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
 
                         <!-- <div class="card__content">  -->
                         <div class="card__data">
