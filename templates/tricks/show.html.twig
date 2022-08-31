@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <section class="my-5 pt-5" id="section-figure">
+        <div class="container">
+            <div class="row justify-content-around">
+                <div class="col-12 col-md-4 my-2">
+                    <img src="{{ asset('images/snowboard-' ~ random(1,2) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
+                </div>
+                <div class="col-12 col-md-8 my-2">
+                    <div class="card-figure-details">
+                        <div class="card__content">
+                            <p class="card__title fw-bold">{{ figure.name }}</p>
+                            <p class="card__preci"><span class="fw-light">par</span> {{ figure.user.username }}</p>
+                            <p class="description">{{ figure.description }}</p>
+                            <hr class="bg-primary border-2 border-top border-primary my-4">
+                            <p class="content">{{ figure.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

@@ -14,7 +14,7 @@
                             <p class="card__title fw-bold">{{ figure.name }}</p>
                             <p class="card__preci"><span class="fw-light">par</span> {{ figure.user.username }}</p>
                             <p class="card__description">{{ figure.description }}</p>
-                            <a href="#" class="card__button">En lire plus</a>
+                            <a href="{{ path('trick_show', { 'slug': figure.id }) }}" class="card__button">En lire plus</a>
                         </div>
                     </div>
                 </div>

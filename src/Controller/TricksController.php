@@ -51,19 +51,16 @@ class TricksController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/{slug}", name="app_question_show")
+     * @Route("/tricks/{slug}", name="trick_show")
      */
-    public function show($slug)
+    public function show($slug, EntityManagerInterface $entityManager)
     {
-        $answers = [
-            'Make sure your cat is sitting purrrfectly still 🤣',
-            'Honestly, I like furry shoes better than MY cat',
-            'Maybe... try saying the spell backwards?',
-        ];
+        $repository = $entityManager->getRepository(Figure::class);
+        $figure = $repository->findOneBy(array('id' => $slug));
 
-        return $this->render('question/show.html.twig', [
-            'question' => ucwords(str_replace('-', ' ', $slug)),
-            'answers' => $answers,
+
+        return $this->render('tricks/show.html.twig', [
+            'figure' => $figure,
         ]);
     }
 }
