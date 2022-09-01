@@ -3,46 +3,29 @@
 {% block content %}
 <section class="pt-5">
     <div class="container">
-            <form action="{{ path('account_creation') }}" method="post">
-                <h2 class="text-center primary-text">Inscription</h2>
+            <form action="{{ path('register') }}" method="post">
+                <h2 class="text-center primary-text mb-5">Inscription</h2>
                 <div class="row g-3">
+                    {{ form_start(user_form) }}
+                    {{ form_errors(user_form) }}
                     <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="prenom" class="form-control" placeholder="Prénom" required="required" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="nom" class="form-control" placeholder="Nom" required="required" autocomplete="off">
-                        </div>
+                        {{ form_widget(user_form.name) }}
                     </div>
                     <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <input type="email" name="email" class="form-control" placeholder="Email" required="required" autocomplete="off">
-                        </div>
+                        {{ form_widget(user_form.firstName) }}
                     </div>
                     <div class="col-12 col-md-6">
-                        <div class="form-group">
-                            <input type="text" name="username" class="form-control" placeholder="Pseudo" required="required" autocomplete="off">
-                        </div>
+                        {{ form_widget(user_form.email) }}
                     </div>
-                    <div class="col-12">       
-                        <div class="form-group">
-                            <input type="password" name="password" class="form-control" placeholder="Mot de passe" required="required" autocomplete="off">
-                        </div>
+                    <div class="col-12 col-md-6">
+                        {{ form_widget(user_form.username) }}
                     </div>
-                    <div class="col-12">       
-                        <div class="form-group">
-                            <input type="password" name="password_retype" class="form-control" placeholder="Re-tapez le mot de passe" required="required" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-12">       
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">Inscription</button>
-                        </div>
-                    </div>
-                </div>   
+                    {{ form_widget(user_form.password) }}
+                    {{ form_row(user_form.Submit, { 'label': 'Submit' }) }}
+                    {{ form_end(user_form) }}
+
+                </div>
             </form>
-    </div>            
+    </div>
 </section>            
 {% endblock %}

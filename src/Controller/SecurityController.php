@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -27,47 +28,32 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(): Response
+    public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        $user = new User();
+        $form = $this->createForm(UserFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $password = $form->get('password')->getData();
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $password
+            );
+            $user->setPassword($hashedPassword);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+
+            return $this->render('security/login.html.twig');
+        }
 
         return $this->render('security/register.html.twig', [
+            'user_form' => $form->createView()
 
         ]);
     }
 
-    /**
-     * @Route("/create-account", name="account_creation")
-     */
-    public function createUser(Request $request,EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        if (!empty($request->get('prenom')) && !empty($request->get('nom')) &&  !empty($request->get('username')) && !empty($request->get('email'))&& !empty($request->get('password')) && !empty($request->get('password_retype')))
-        {
-            if ($request->get('password') === $request->get('password_retype')) {
-
-                $user = new User();
-                $password = $request->get('password');
-                $hashedPassword = $passwordHasher->hashPassword(
-                    $user,
-                    $password
-                );
-                $user->setEmail($request->get('email'))
-                    ->setPassword($hashedPassword)
-                    ->setName($request->get('nom'))
-                    ->setFirstName($request->get('prenom'))
-                    ->setUsername($request->get('username'));
-                $entityManager->persist($user);
-                $entityManager->flush();
-
-                return $this->render('home/default.html.twig');
-            } else {
-                throw new Exception('Mot de passe non correspondant.');
-            }
-        }
-        else
-        {
-            throw new Exception('Veuillez remplir tous les champs.');
-        }
-    }
 
 
     /**

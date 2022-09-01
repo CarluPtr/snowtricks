@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=144)
+     * @ORM\Column(type="string", length=20)
      */
     private $username;
 
