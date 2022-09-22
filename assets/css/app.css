@@ -310,6 +310,7 @@ img {
 .card__data,
 .card__title,
 .card__preci,
+.card__certified,
 .card__description {
     transition: .5s;
 }
@@ -332,6 +333,10 @@ img {
 }
 
 .card-figure:hover .card__preci {
+    transform: translateX(-1.5rem);
+}
+
+.card-figure:hover .card__certified {
     transform: translateX(-1.5rem);
 }
 

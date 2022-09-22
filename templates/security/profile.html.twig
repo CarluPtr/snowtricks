@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil de {{ user.username }}{% endblock %}
+
+{% block content %}
+
+    <section class="pt-5 py-5">
+        <div class="container py-5">
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="{{ asset('images/logo.png') }}" alt="avatar"
+                                 class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
+                            <h5 class="my-3">{{user.username}}</h5>
+                            <h5 class="my-3 fw-light">{{user.firstName}} {{user.name}}</h5>
+                            <p class="text-muted pb-2"></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Nom complet</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{user.firstName}} {{user.name}}</p>
+                                </div>
+                            </div>
+                                <hr>
+                            {% if app.user == user %}
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">{{user.email}} <span class="fw-light fst-italic">(uniquement visible par vous)</span></p>
+                                    </div>
+                                </div>
+                            <hr>
+                            {% else %}
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Date inscription</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{ user.dateinscription | date('d/m/y') }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Rôle</p>
+                                </div>
+                                <div class="col-sm-9">
+
+                                    {% if "ROLE_ADMIN" in user.roles %}
+
+                                        <p class="text-muted mb-0">Administrateur</p>
+
+                                    {% else %}
+
+                                        <p class="text-muted mb-0">Utilisateur</p>
+
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-4">
+                    <h3 class='py-2 fw-light'>Posts de l'utilisateur</h3>
+                    {% for figure in figures %}
+                            {% include "macros/macro.figure.html.twig" %}
+                    {% endfor %}
+                </div>
+
+
+                <div class="col-8">
+                    <h3 class='py-2 fw-light'>Commentaires de l'utilisateur</h3>
+                    {% for comment in comments %}
+                        <div class="card my-4">
+                            <div class="card-body">
+                                {{ comment.content }}
+
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <img src="{{ asset('images/logo.png') }}" alt="avatar" width="25"
+                                             height="25" />
+                                        <p class="small mb-0 ms-2">{{ comment.user.username }}</p>
+                                    </div>
+                                    <div class="d-flex flex-row align-items-center">
+                                        <p class="small text-muted mb-0">{{ comment.datecreation| date }}</p>
+                                    </div>
+                                </div>
+                                {% if comment.datemodif %}
+                                    <div class="d-flex justify-content-end">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <p class="small mb-0 primary-text"> modifié le {{ comment.datemodif| date }}</p>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

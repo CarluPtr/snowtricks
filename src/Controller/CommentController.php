@@ -2,29 +2,31 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Entity\Figure;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CommentController extends AbstractController
 {
     /**
-     * @Route("/comments/{id}/vote/{direction<up|down>}", methods={"POST"})
+     * @Route("/newcomment", name="comment")
      */
-    public function commentVote($id, $direction, LoggerInterface $logger)
-    {
-        // todo - use id to query the database
+    public function newComment(EntityManagerInterface $entityManager, SluggerInterface $slugger){
+        $comment = new Comment();
+        $user = $this->getUser();
+        $figure = $entityManager->getRepository(Figure::class)->find(3);
+        $comment->setContent('commentaire test')
+            ->setFigure($figure)
+            ->setUser($user);
+        $entityManager->persist($comment);
+        $entityManager->flush();
 
-        // use real logic here to save this to the database
-        if ($direction === 'up') {
-            $logger->info('Voting up!');
-            $currentVoteCount = rand(7, 100);
-        } else {
-            $logger->info('Voting down!');
-            $currentVoteCount = rand(0, 5);
-        }
-
-        return $this->json(['votes' => $currentVoteCount]);
+        return new Response('Comment created.');
     }
 }
