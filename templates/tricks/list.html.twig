@@ -3,16 +3,46 @@
 {% block content %}
     <section class="my-5 pt-5" id="section-figure">
         <div class="container">
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Poste ta figure
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade my-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            /// FORM ///
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="row justify-content-around">
                 {% for figure in figures %}
                 <div class="col-12 col-md-6 col-lg-3 my-2">
                     <div class="card-figure">
-                        <img src="{{ asset('images/snowboard-' ~ random(1,2) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
+                        <img src="{{ asset('images/snowboard-' ~ random(1,3) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
 
                         <!-- <div class="card__content">  -->
                         <div class="card__data">
                             <p class="card__title fw-bold">{{ figure.name }}</p>
                             <p class="card__preci"><span class="fw-light">par</span> {{ figure.user.username }}</p>
+                            {% if figure.certified == 1 %}
+                                <strong class="card__certified d-inline-block btn btn-outline-light mb-3">Figure Certifié <i class="fas fa-check-circle"></i></strong>
+                            {% else %}
+                            {% endif %}
                             <p class="card__description">{{ figure.description }}</p>
                             <a href="{{ path('trick_show', { 'slug': figure.id }) }}" class="card__button">En lire plus</a>
                         </div>

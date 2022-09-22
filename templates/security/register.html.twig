@@ -3,16 +3,15 @@
 {% block content %}
 <section class="pt-5">
     <div class="container">
-            <form action="{{ path('register') }}" method="post">
+        {{ form_start(user_form) }}
                 <h2 class="text-center primary-text mb-5">Inscription</h2>
                 <div class="row g-3">
-                    {{ form_start(user_form) }}
                     {{ form_errors(user_form) }}
                     <div class="col-12 col-md-6">
-                        {{ form_widget(user_form.name) }}
+                        {{ form_widget(user_form.firstName) }}
                     </div>
                     <div class="col-12 col-md-6">
-                        {{ form_widget(user_form.firstName) }}
+                        {{ form_widget(user_form.name) }}
                     </div>
                     <div class="col-12 col-md-6">
                         {{ form_widget(user_form.email) }}
@@ -20,13 +19,13 @@
                     </div>
                     <div class="col-12 col-md-6">
                         {{ form_widget(user_form.username) }}
+                        {{ form_errors(user_form.username) }}
                     </div>
                     {{ form_widget(user_form.password) }}
                     {{ form_row(user_form.Submit, { 'label': 'Submit' }) }}
-                    {{ form_end(user_form) }}
 
                 </div>
-            </form>
+        {{ form_end(user_form) }}
     </div>
 </section>            
 {% endblock %}

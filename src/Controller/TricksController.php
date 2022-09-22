@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Figure;
 use App\Entity\User;
+use App\Form\CommentFormType;
+use App\Form\UserFormType;
+use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -53,14 +58,31 @@ class TricksController extends AbstractController
     /**
      * @Route("/tricks/{slug}", name="trick_show")
      */
-    public function show($slug, EntityManagerInterface $entityManager)
+    public function show( Request $request, $slug, EntityManagerInterface $entityManager, CommentRepository $commentRepository)
     {
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('id' => $slug));
 
+        $comment = new Comment();
+        $form = $this->createForm(CommentFormType::class, $comment);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $comment->setUser($user);
+            $comment->setFigure($figure);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute("trick_show", array('slug' => $slug));
+        }
+
 
         return $this->render('tricks/show.html.twig', [
             'figure' => $figure,
+            'comment_form' => $form->createView(),
+            'comments' => $commentRepository->findBy(['figure' => $figure], ['dateCreation' => 'DESC'])
         ]);
     }
 }

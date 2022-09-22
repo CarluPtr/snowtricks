@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
+use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\UserFormType;
+use App\Repository\CommentRepository;
+use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -16,12 +20,17 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/security", name="app_security")
+     * @Route("/profile/{slug}", name="user_profile")
      */
-    public function index(): Response
+    public function profilePage(EntityManagerInterface $entityManager, $slug, CommentRepository $commentRepository, FigureRepository $figureRepository): Response
     {
-        return $this->render('security/index.html.twig', [
-            'controller_name' => 'SecurityController',
+        $repository = $entityManager->getRepository(User::class);
+        $user = $repository->findOneBy(array('username' => $slug));
+
+        return $this->render('security/profile.html.twig', [
+            'user' => $user,
+            'figures' => $figureRepository->findBy(['user' => $user], ['dateCreation' => 'DESC']),
+            'comments' => $commentRepository->findBy(['user' => $user], ['dateCreation' => 'DESC'])
         ]);
     }
 

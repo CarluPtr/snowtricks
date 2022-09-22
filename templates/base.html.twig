@@ -32,7 +32,7 @@
                 <ul class="navbar-nav">
                     {% if app.user %}
                         <li class="nav-item">
-                            <a class="nav-link"><i class="fas fa-user-circle pe-2 primary-text"></i> {{ app.user.firstname }} {{ app.user.name }} - <span class="fw-bold">{{ app.user.username }}</span></a>
+                            <a class="nav-link" href="{{ path('user_profile', {'slug' : app.user.username}) }}"><i class="fas fa-user-circle pe-2 primary-text"></i> {{ app.user.firstname }} {{ app.user.name }} - <span class="fw-bold">{{ app.user.username }}</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link primary-text" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt pe-2"></i>Déconnexion</a>
