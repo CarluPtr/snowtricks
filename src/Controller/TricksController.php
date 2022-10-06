@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\CommentFormType;
+use App\Form\FigureFormType;
 use App\Form\UserFormType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
@@ -23,14 +24,37 @@ class TricksController extends AbstractController
     /**
      * @Route("/tricks", name="tricks_list")
      */
-    public function showAllTricks(EntityManagerInterface $entityManager): Response
+    public function showAllTricks(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $repository = $entityManager->getRepository(Figure::class);
         $figures = $repository->findAll();
 
+        $figure = new Figure();
+
+        $form = $this->createForm(FigureFormType::class, $figure);
+        $form->handleRequest($request);
+        $user = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()){
+
+            $verification = in_array('ROLE_ADMIN', $user->getRoles());
+
+            $figure->setCertified($verification);
+            $figure->setUser($user);
+            $figure->setSlug(
+                $slugger->slug($figure->getName())->lower()
+            );
+            $entityManager->persist($figure);
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute("trick_show", array('slug' => $figure->getSlug()));
+        }
+
         return $this->render('tricks/list.html.twig', [
             'title' => 'Snow Tricks',
             'figures' => $figures,
+            'figure_form' => $form->createView()
         ]);
     }
     /**
@@ -61,7 +85,7 @@ class TricksController extends AbstractController
     public function show( Request $request, $slug, EntityManagerInterface $entityManager, CommentRepository $commentRepository)
     {
         $repository = $entityManager->getRepository(Figure::class);
-        $figure = $repository->findOneBy(array('id' => $slug));
+        $figure = $repository->findOneBy(array('slug' => $slug));
 
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
