@@ -1,13 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <section class="my-5 pt-5" id="section-figure">
+    <section class="my-5" id="section-figure">
         <div class="container">
 
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Poste ta figure
             </button>
+            {{ form_start(figure_form) }}
+
+            {{ form_errors(figure_form) }}
+
+            {{ form_errors(figure_form.name) }}
+            {{ form_errors(figure_form.description) }}
+            {{ form_errors(figure_form.content) }}
 
             <!-- Modal -->
             <div class="modal fade my-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -18,11 +25,27 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            /// FORM ///
+                            <h2 class="text-center primary-text mb-5">Créer ta propre figure</h2>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    {{ form_label(figure_form.name) }}
+                                    {{ form_widget(figure_form.name) }}
+                                </div>
+                                <div class="col-12">
+                                    {{ form_label(figure_form.description) }}
+                                    {{ form_widget(figure_form.description) }}
+                                </div>
+                                <div class="col-12">
+                                    {{ form_label(figure_form.content) }}
+                                    {{ form_widget(figure_form.content) }}
+                                </div>
+
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            {{ form_end(figure_form) }}
                         </div>
                     </div>
                 </div>
@@ -31,7 +54,7 @@
 
             <div class="row justify-content-around">
                 {% for figure in figures %}
-                <div class="col-12 col-md-6 col-lg-3 my-2">
+                <div class="col-12 col-md-6 col-lg-3 my-5">
                     <div class="card-figure">
                         <img src="{{ asset('images/snowboard-' ~ random(1,3) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
 
@@ -44,7 +67,7 @@
                             {% else %}
                             {% endif %}
                             <p class="card__description">{{ figure.description }}</p>
-                            <a href="{{ path('trick_show', { 'slug': figure.id }) }}" class="card__button">En lire plus</a>
+                            <a href="{{ path('trick_show', { 'slug': figure.slug }) }}" class="card__button">En lire plus</a>
                         </div>
                     </div>
                 </div>

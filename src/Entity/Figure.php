@@ -6,9 +6,12 @@ use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
+ * @UniqueEntity("name", message="Ce nom de figure est déjà pris")
+ * @UniqueEntity("slug", message="Ce slug est déjà pris.")
  */
 class Figure
 {
@@ -63,6 +66,7 @@ class Figure
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->dateCreation = new \DateTime();
     }
 
     public function getId(): ?int
