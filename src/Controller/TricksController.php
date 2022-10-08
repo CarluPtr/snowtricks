@@ -57,27 +57,6 @@ class TricksController extends AbstractController
             'figure_form' => $form->createView()
         ]);
     }
-    /**
-     * @Route("/create", name="test")
-     */
-    public function new(EntityManagerInterface $entityManager, SluggerInterface $slugger){
-        $figure = new Figure();
-        $user = $this->getUser();
-        $figure->setName('Super flip 180')
-            ->setDescription('hrr rh rrhrdr hrrh efeg e')
-            ->setSlug(
-                $slugger->slug($figure->getName())->lower()
-            )
-            ->setUser($user);
-        $entityManager->persist($figure);
-        $entityManager->flush();
-
-        return new Response(sprintf(
-            'Well hallo! The shiny new question is id #%s, slug: %s',
-            $figure->getName(),
-            $figure->getSlug()
-        ));
-    }
 
     /**
      * @Route("/tricks/{slug}", name="trick_show")

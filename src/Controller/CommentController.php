@@ -10,14 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CommentController extends AbstractController
 {
     /**
      * @Route("/newcomment", name="comment")
      */
-    public function newComment(EntityManagerInterface $entityManager, SluggerInterface $slugger){
+    public function newComment(EntityManagerInterface $entityManager){
         $comment = new Comment();
         $user = $this->getUser();
         $figure = $entityManager->getRepository(Figure::class)->find(3);

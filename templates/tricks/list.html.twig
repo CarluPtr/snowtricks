@@ -3,7 +3,7 @@
 {% block content %}
     <section class="my-5" id="section-figure">
         <div class="container">
-
+        {% if app.user %}
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Poste ta figure
@@ -50,7 +50,9 @@
                     </div>
                 </div>
             </div>
+        {% else %}
 
+        {% endif %}
 
             <div class="row justify-content-around">
                 {% for figure in figures %}
