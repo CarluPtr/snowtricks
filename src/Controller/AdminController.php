@@ -17,7 +17,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="app_admin")
      */
-    public function adminPanel(EntityManagerInterface $entityManager, CommentRepository $commentRepository, FigureRepository $figureRepository): Response
+    public function adminPanel(CommentRepository $commentRepository, FigureRepository $figureRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
