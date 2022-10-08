@@ -1,6 +1,6 @@
 <div class="card flex-md-row box-shadow h-md-250 my-4">
     <div class="card-body d-flex flex-column align-items-start">
-        {% if figure.certified == 1 %}
+        {% if figure.certified %}
             <strong class="d-inline-block mb-2 primary-text">Figure Certifié <i class="fas fa-check-circle"></i></strong>
         {% else %}
             <strong class="d-inline-block mb-2 text-secondary">Non certifié</strong>
@@ -11,5 +11,11 @@
         <div class="mb-1 text-muted">le {{ figure.datecreation | date('d/m/Y') }} à {{ figure.datecreation | date('H:i') }}</div>
         <p class="card-text mb-auto">{{ figure.content }}</p>
         <a class="btn btn-primary" href="{{ path('trick_show', {'slug' : figure.id}) }}">Voir la figure complète</a>
+        {% if figure.certified %}
+        <a href="{{ path('certif_figure', { 'id': figure.id }) }}" class="btn btn-outline-dark mt-2">Enlever la certification</a>
+        {% else %}
+            <a href="{{ path('certif_figure', { 'id': figure.id }) }}" class="btn btn-warning mt-2">Certifier la figure</a>
+        {% endif %}
+        <a href="{{ path('delete_figure', { 'id': figure.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')" class="btn btn-danger mt-2">Supprimer</a>
     </div>
 </div>
