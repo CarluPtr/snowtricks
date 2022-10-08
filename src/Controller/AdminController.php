@@ -19,11 +19,7 @@ class AdminController extends AbstractController
      */
     public function adminPanel(EntityManagerInterface $entityManager, CommentRepository $commentRepository, FigureRepository $figureRepository): Response
     {
-        $repository = $entityManager->getRepository(Figure::class);
-        $figures = $repository->findAll();
-
-        $commentRepository = $entityManager->getRepository(Comment::class);
-        $comments = $commentRepository->findAll();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         return $this->render('admin/index.html.twig', [
             'figures' => $figureRepository->findBy(array(), array('dateCreation' => 'DESC')),
