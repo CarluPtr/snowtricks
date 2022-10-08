@@ -8,6 +8,7 @@ use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -49,19 +50,27 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/delete/comment/{id}", name="delete_comment")
+     * // Fonction pour supprimer un commentaire utilisateur également.
      */
-    public function deleteComment(EntityManagerInterface $entityManager, $id): Response
+    public function deleteComment(EntityManagerInterface $entityManager, $id, Request $request): Response
     {
-        // Verify if user is an admin and throw AccesDeniedException if he's not
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $repository = $entityManager->getRepository(Comment::class);
         $comment = $repository->findOneBy(array('id' => $id));
 
-        $entityManager->remove($comment);
-        $entityManager->flush();
-
-        return $this->redirectToRoute("app_admin");
+        $user = $this->getUser();
+        // Verify if user is an admin and throw AccesDeniedException if he's not
+        if(in_array('ROLE_ADMIN', $user->getRoles()) or $user == $comment->getUser())
+        {
+            $entityManager->remove($comment);
+            $entityManager->flush();
+        }
+        else
+        {
+            throw new \Exception("Vous n'avez pas les permissions pour effectuer cette action.");
+        }
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 
     /**

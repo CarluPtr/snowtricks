@@ -20,6 +20,9 @@
             </div>
         {% else %}
         {% endif %}
+        {% if is_granted('ROLE_ADMIN') or app.user == comment.user %}
         <a href="{{ path('delete_comment', { 'id': comment.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')" class="btn btn-danger mt-2">Supprimer</a>
+        {% else %}
+        {% endif %}
     </div>
 </div>
