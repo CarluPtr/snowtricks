@@ -72,7 +72,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/certif/figure/{id}", name="certif_figure")
      */
-    public function certifFigure(EntityManagerInterface $entityManager, $id): Response
+    public function certifFigure(EntityManagerInterface $entityManager, $id, Request $request): Response
     {
         // Verify if user is an admin and throw AccesDeniedException if he's not
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -91,6 +91,7 @@ class AdminController extends AbstractController
         $entityManager->persist($figure);
         $entityManager->flush();
 
-        return $this->redirectToRoute("app_admin");
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 }

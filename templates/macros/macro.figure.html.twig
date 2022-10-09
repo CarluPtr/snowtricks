@@ -10,12 +10,18 @@
         </h3>
         <div class="mb-1 text-muted">le {{ figure.datecreation | date('d/m/Y') }} à {{ figure.datecreation | date('H:i') }}</div>
         <p class="card-text mb-auto">{{ figure.content }}</p>
-        <a class="btn btn-primary" href="{{ path('trick_show', {'slug' : figure.id}) }}">Voir la figure complète</a>
-        {% if figure.certified %}
-        <a href="{{ path('certif_figure', { 'id': figure.id }) }}" class="btn btn-outline-dark mt-2">Enlever la certification</a>
+        <a class="btn btn-primary" href="{{ path('trick_show', {'slug' : figure.slug}) }}">Voir la figure complète</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            {% if figure.certified %}
+            <a href="{{ path('certif_figure', { 'id': figure.id }) }}" class="btn btn-outline-dark mt-2">Enlever la certification</a>
+            {% else %}
+                <a href="{{ path('certif_figure', { 'id': figure.id }) }}" class="btn btn-warning mt-2">Certifier la figure</a>
+            {% endif %}
         {% else %}
-            <a href="{{ path('certif_figure', { 'id': figure.id }) }}" class="btn btn-warning mt-2">Certifier la figure</a>
         {% endif %}
-        <a href="{{ path('delete_figure', { 'id': figure.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')" class="btn btn-danger mt-2">Supprimer</a>
+        {% if is_granted('ROLE_ADMIN') or app.user == figure.user %}
+            <a href="{{ path('delete_figure', { 'id': figure.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')" class="btn btn-danger mt-2">Supprimer</a>
+        {% else %}
+        {% endif %}
     </div>
 </div>

@@ -1,0 +1,17 @@
+<div class="col-12 col-md-6 col-lg-3 my-5">
+    <div class="card-figure">
+        <img src="{{ asset('images/snowboard-' ~ random(1,3) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
+
+        <!-- <div class="card__content">  -->
+        <div class="card__data">
+            <p class="card__title fw-bold">{{ figure.name }}</p>
+            <p class="card__preci"><span class="fw-light">par</span> {{ figure.user.username }}</p>
+            {% if figure.certified == 1 %}
+                <strong class="card__certified d-inline-block btn btn-outline-light mb-3">Figure Certifié <i class="fas fa-check-circle"></i></strong>
+            {% else %}
+            {% endif %}
+            <p class="card__description">{{ figure.description }}</p>
+            <a href="{{ path('trick_show', { 'slug': figure.slug }) }}" class="card__button">En lire plus</a>
+        </div>
+    </div>
+</div>
