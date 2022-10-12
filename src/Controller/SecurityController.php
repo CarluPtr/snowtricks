@@ -22,7 +22,12 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile/{slug}", name="user_profile")
      */
-    public function profilePage(EntityManagerInterface $entityManager, $slug, CommentRepository $commentRepository, FigureRepository $figureRepository): Response
+    public function profilePage(
+        EntityManagerInterface $entityManager,
+        string $slug,
+        CommentRepository $commentRepository,
+        FigureRepository $figureRepository
+    ): Response
     {
         $repository = $entityManager->getRepository(User::class);
         $user = $repository->findOneBy(array('username' => $slug));
@@ -37,13 +42,17 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response
     {
         $user = new User();
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $password = $form->get('password')->getData();
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
@@ -52,7 +61,6 @@ class SecurityController extends AbstractController
             $user->setPassword($hashedPassword);
             $entityManager->persist($user);
             $entityManager->flush();
-
 
             return $this->render('security/login.html.twig');
         }

@@ -61,7 +61,7 @@ class TricksController extends AbstractController
     /**
      * @Route("/tricks/{slug}", name="trick_show")
      */
-    public function show( Request $request, $slug, EntityManagerInterface $entityManager, CommentRepository $commentRepository)
+    public function show( Request $request, string $slug, EntityManagerInterface $entityManager, CommentRepository $commentRepository)
     {
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('slug' => $slug));
@@ -87,5 +87,27 @@ class TricksController extends AbstractController
             'comment_form' => $form->createView(),
             'comments' => $commentRepository->findBy(['figure' => $figure], ['dateCreation' => 'DESC'])
         ]);
+    }
+
+    /**
+     * @Route("/delete/figure/{id}", name="delete_figure")
+     */
+    public function adminDeleteFigure(EntityManagerInterface $entityManager, int $id, Request $request): Response
+    {
+
+        $repository = $entityManager->getRepository(Figure::class);
+        $figure = $repository->findOneBy(array('id' => $id));
+
+        $user = $this->getUser();
+
+        if($user == $figure->getUser()) {
+            $entityManager->remove($figure);
+            $entityManager->flush();
+        }
+        else {
+            throw new \Exception("Vous n'avez pas les permissions pour effectuer cette action.");
+        }
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 }
