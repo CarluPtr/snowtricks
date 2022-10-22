@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
         return $this->render('security/profile.html.twig', [
             'user' => $user,
             'figures' => $figureRepository->findBy(['user' => $user], ['dateCreation' => 'DESC']),
-            'comments' => $commentRepository->findBy(['user' => $user], ['dateCreation' => 'DESC'])
+            'edit-forms' => $commentRepository->findBy(['user' => $user], ['dateCreation' => 'DESC'])
         ]);
     }
 

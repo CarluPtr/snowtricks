@@ -33,13 +33,13 @@ class Comment
     private $dateModif;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="edit-forms")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="edit-forms")
      * @ORM\JoinColumn(nullable=false)
      */
     private $figure;

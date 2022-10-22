@@ -4,14 +4,35 @@
     <section class="my-5 pt-5" id="section-figure">
         <div class="container">
             <div class="row justify-content-around">
-                <div class="col-12 col-md-4 my-2">
-                    <img src="{{ asset('images/snowboard-' ~ random(1,2) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
+                <div class="col-12 col-md-4 my-2 text-center">
+                    <img src="{{ asset('images/snowboard-' ~ random(1,3) ~ '.png') }}" width="250px" alt="" class="alternative-{{ random(1,2) }}">
                 </div>
                 <div class="col-12 col-md-8 my-2">
-                    <div class="card-figure-details">
+                    <div class="border border-primary rounded">
                         <div class="card__content">
+                            {% if app.user == figure.user %}
+                            <div class="d-flex justify-content-end mb-2">
+                                <a href="{{ path('edit_figure', { 'id': figure.id} ) }}" class="btn btn-primary mt-2">
+                                    Modifier figure
+                                </a>
+                            </div>
+
+                            {% else %}
+                            {% endif %}
                             <p class="card__title fw-bold">{{ figure.name }}</p>
-                            <p class="card__preci"><span class="fw-light">par</span> {{ figure.user.username }} <span class="fw-light">le {{ figure.datecreation | date('d/m/Y') }} à {{ figure.datecreation | date('H:i') }}</span></p>
+                            <p class="card__preci"><span class="fw-light">par </span>
+                                <a href="{{ path('user_profile', { 'slug': figure.user.username }) }}">{{ figure.user.username }}</a>
+                                <span class="fw-light">
+                                    le {{ figure.datecreation | date('d/m/Y') }} à {{ figure.datecreation | date('H:i') }}
+                                </span>
+                                {% if figure.datemodif %}
+                                <div class="d-flex justify-content-start mb-2">
+                                    <div class="d-flex flex-row align-items-center">
+                                        <p class="small mb-0 primary-text"> modifiée le {{ figure.datemodif| date }}</p>
+                                    </div>
+                                </div>
+                                {% else %}
+                                {% endif %}
                             <p class="description">{{ figure.description }}</p>
                             <hr class="bg-primary border-2 border-top border-primary my-4">
                             <p class="content">{{ figure.content }}</p>

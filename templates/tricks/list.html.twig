@@ -5,7 +5,7 @@
         <div class="container">
         {% if app.user %}
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#figureModal">
                 Poste ta figure
             </button>
             {{ form_start(figure_form) }}
@@ -17,15 +17,15 @@
             {{ form_errors(figure_form.content) }}
 
             <!-- Modal -->
-            <div class="modal fade my-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade my-5" id="figureModal" tabindex="-1" aria-labelledby="figureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="figureModalLabel">Partage avec tous le monde ta figure !</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <h2 class="text-center primary-text mb-5">Créer ta propre figure</h2>
+                            <h2 class="text-center primary-text mb-3">Créer ta propre figure</h2>
                             <div class="row g-3">
                                 <div class="col-12">
                                     {{ form_label(figure_form.name) }}

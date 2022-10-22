@@ -23,7 +23,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/index.html.twig', [
             'figures' => $figureRepository->findBy(array(), array('dateCreation' => 'DESC')),
-            'comments' => $commentRepository->findBy(array(), array('dateCreation' => 'DESC'))
+            'edit-forms' => $commentRepository->findBy(array(), array('dateCreation' => 'DESC'))
         ]);
     }
 

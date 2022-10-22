@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <section class="pt-5">
+        <div class="container">
+            {{ form_start(edit_comment_form) }}
+            <h2 class="text-center primary-text mb-5">Modifiez votre commentaire</h2>
+            <div class="row g-3">
+                {{ form_errors(edit_comment_form) }}
+                <div class="col-12">
+                    {{ form_widget(edit_comment_form.content) }}
+                </div>
+            </div>
+            <div class="mt-3 text-end">
+                {{ form_row(edit_comment_form.Submit, { 'label': 'Modifier' }) }}
+            </div>
+
+            {{ form_end(edit_comment_form) }}
+        </div>
+    </section>
+{% endblock %}
