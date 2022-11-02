@@ -28,9 +28,9 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/delete/figure/{id}", name="delete_figure")
+     * @Route("/admin/delete/figure/{id}", name="admin_delete_figure")
      */
-    public function deleteFigure(EntityManagerInterface $entityManager, $id): Response
+    public function deleteFigure(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
         // Verify if user is an admin and throw AccesDeniedException if he's not
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -41,30 +41,24 @@ class AdminController extends AbstractController
         $entityManager->remove($figure);
         $entityManager->flush();
 
-        return $this->redirectToRoute("app_admin");
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 
     /**
-     * @Route("/delete/comment/{id}", name="delete_comment")
-     * // Fonction pour supprimer un commentaire utilisateur également.
+     * @Route("/admin/delete/comment/{id}", name="admin_delete_comment")
      */
-    public function deleteComment(EntityManagerInterface $entityManager, $id, Request $request): Response
+    public function adminDeleteComment(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
+        // Verify if user is an admin and throw AccesDeniedException if he's not
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $repository = $entityManager->getRepository(Comment::class);
         $comment = $repository->findOneBy(array('id' => $id));
 
-        $user = $this->getUser();
-        // Verify if user is an admin and throw AccesDeniedException if he's not
-        if(in_array('ROLE_ADMIN', $user->getRoles()) or $user == $comment->getUser())
-        {
-            $entityManager->remove($comment);
-            $entityManager->flush();
-        }
-        else
-        {
-            throw new \Exception("Vous n'avez pas les permissions pour effectuer cette action.");
-        }
+        $entityManager->remove($comment);
+        $entityManager->flush();
+
         $route = $request->headers->get('referer');
         return $this->redirect($route);
     }
@@ -72,7 +66,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/certif/figure/{id}", name="certif_figure")
      */
-    public function certifFigure(EntityManagerInterface $entityManager, $id): Response
+    public function certifFigure(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
         // Verify if user is an admin and throw AccesDeniedException if he's not
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -80,17 +74,15 @@ class AdminController extends AbstractController
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('id' => $id));
 
-        if($figure->isCertified())
-        {
+        if ($figure->isCertified()) {
             $figure->setCertified(0);
-        }
-        else
-        {
+        } else {
             $figure->setCertified(1);
         }
         $entityManager->persist($figure);
         $entityManager->flush();
 
-        return $this->redirectToRoute("app_admin");
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
     }
 }

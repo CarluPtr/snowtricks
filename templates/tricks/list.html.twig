@@ -5,7 +5,7 @@
         <div class="container">
         {% if app.user %}
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#figureModal">
                 Poste ta figure
             </button>
             {{ form_start(figure_form) }}
@@ -17,15 +17,15 @@
             {{ form_errors(figure_form.content) }}
 
             <!-- Modal -->
-            <div class="modal fade my-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade my-5" id="figureModal" tabindex="-1" aria-labelledby="figureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="figureModalLabel">Partage avec tous le monde ta figure !</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <h2 class="text-center primary-text mb-5">Créer ta propre figure</h2>
+                            <h2 class="text-center primary-text mb-3">Créer ta propre figure</h2>
                             <div class="row g-3">
                                 <div class="col-12">
                                     {{ form_label(figure_form.name) }}
@@ -56,23 +56,7 @@
 
             <div class="row justify-content-around">
                 {% for figure in figures %}
-                <div class="col-12 col-md-6 col-lg-3 my-5">
-                    <div class="card-figure">
-                        <img src="{{ asset('images/snowboard-' ~ random(1,3) ~ '.png') }}" alt="" class="card__img alternative-{{ random(1,2) }}">
-
-                        <!-- <div class="card__content">  -->
-                        <div class="card__data">
-                            <p class="card__title fw-bold">{{ figure.name }}</p>
-                            <p class="card__preci"><span class="fw-light">par</span> {{ figure.user.username }}</p>
-                            {% if figure.certified == 1 %}
-                                <strong class="card__certified d-inline-block btn btn-outline-light mb-3">Figure Certifié <i class="fas fa-check-circle"></i></strong>
-                            {% else %}
-                            {% endif %}
-                            <p class="card__description">{{ figure.description }}</p>
-                            <a href="{{ path('trick_show', { 'slug': figure.slug }) }}" class="card__button">En lire plus</a>
-                        </div>
-                    </div>
-                </div>
+                    {% include 'macros/macro.tricks-card.html.twig' %}
                 {% endfor %}
             </div>
         </div>

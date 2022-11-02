@@ -18,11 +18,20 @@
                     <p class="small mb-0 primary-text"> modifié le {{ comment.datemodif| date }}</p>
                 </div>
             </div>
-        {% else %}
         {% endif %}
-        {% if is_granted('ROLE_ADMIN') or app.user == comment.user %}
-        <a href="{{ path('delete_comment', { 'id': comment.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')" class="btn btn-danger mt-2">Supprimer</a>
-        {% else %}
+
+        {% if not is_granted('ROLE_ADMIN') and app.user == comment.user %}
+            <a href="{{ path('delete_comment', { 'id': comment.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')" class="btn btn-danger mt-2">Supprimer mon commentaire</a>
+        {% endif %}
+
+        {% if app.user == comment.user %}
+            <a href="{{ path('edit_comment', { 'id': comment.id} ) }}" class="btn btn-primary mt-2">
+                Modifier commentaire
+            </a>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('admin_delete_comment', { 'id': comment.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')" class="btn btn-danger mt-2">Supprimer</a>
         {% endif %}
     </div>
 </div>

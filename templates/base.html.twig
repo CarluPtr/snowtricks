@@ -45,6 +45,12 @@
                         <a class="nav-link" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt pe-2"></i>Connexion</a>
                     </li>
                     {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt pe-2"></i>Connexion</a>
+                        </li>
+                    {% else %}
+                    {% endif %}
                 </ul>
             </div>
         </div>

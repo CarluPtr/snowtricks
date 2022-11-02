@@ -15,8 +15,9 @@ class FigureFormType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('content', TextareaType::class,[
-                'required' => true
+            ->add('content', TextareaType::class, [
+                'attr' => ['style'=>'overflow:hidden; height:200px'],
+                'required' => true,
             ]);
     }
 

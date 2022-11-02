@@ -77,12 +77,11 @@ body {
     bottom: 0;
 }
 
-.jumbotron-img {
+.jumbotron-img{
     background: rgb(237,116,88);
     background: linear-gradient(302deg, rgba(237,116,88,1) 16%, rgba(51,61,81,1) 97%);
     color: #fff;
 }
-
 .q-container {
     border-top-right-radius: .25rem;
     border-top-left-radius: .25rem;
@@ -125,29 +124,6 @@ body {
 .q-display-response {
     background: #333D51;
     color: #fff;
-}
-
-.answer-link:hover .magic-wand {
-  transform: rotate(20deg);
-}
-
-.vote-arrows {
-    font-size: 1.5rem;
-}
-
-.vote-arrows span {
-    font-size: 1rem;
-}
-
-.vote-arrows a {
-    color: #444;
-}
-
-.vote-up:hover {
-    color: #3D9970;
-}
-.vote-down:hover {
-    color: #FF4136;
 }
 
 .btn-question {
@@ -235,20 +211,6 @@ img {
     padding: 3rem 2rem 0;
     color: var(--white-color);
     overflow-y: hidden;
-}
-.card-figure-details{
-    position: relative;
-}
-.card-figure-details::before{
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 1rem;
-    padding: 0.2rem;
-    background:linear-gradient(to bottom, var(--card-color-1), var(--card-color-2));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
 }
 
 .card__content{

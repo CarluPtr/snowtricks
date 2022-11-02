@@ -63,6 +63,11 @@ class Figure
      */
     private $dateCreation;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_modif;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -184,6 +189,18 @@ class Figure
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getDateModif(): ?\DateTimeInterface
+    {
+        return $this->date_modif;
+    }
+
+    public function setDateModif(?\DateTimeInterface $date_modif): self
+    {
+        $this->date_modif = $date_modif;
 
         return $this;
     }

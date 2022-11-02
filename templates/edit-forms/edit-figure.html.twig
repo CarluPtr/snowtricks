@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+    <section class="pt-5">
+        <div class="container">
+            {{ form_start(edit_figure_form) }}
+            <h2 class="text-center primary-text mb-5">Modifiez votre figureaire</h2>
+            <div class="row g-3">
+                {{ form_errors(edit_figure_form) }}
+                <div class="col-12">
+                    {{ form_label(edit_figure_form.name) }}
+                    {{ form_widget(edit_figure_form.name) }}
+                    {{ form_label(edit_figure_form.description) }}
+                    {{ form_widget(edit_figure_form.description) }}
+                    {{ form_label(edit_figure_form.content) }}
+                    {{ form_widget(edit_figure_form.content) }}
+                </div>
+            </div>
+            <div class="mt-3 text-end">
+                <button class="btn btn-primary" type="submit">Modifier</button>
+            </div>
+
+            {{ form_end(edit_figure_form) }}
+        </div>
+    </section>
+{% endblock %}
