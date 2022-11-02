@@ -23,7 +23,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/index.html.twig', [
             'figures' => $figureRepository->findBy(array(), array('dateCreation' => 'DESC')),
-            'edit-forms' => $commentRepository->findBy(array(), array('dateCreation' => 'DESC'))
+            'comments' => $commentRepository->findBy(array(), array('dateCreation' => 'DESC'))
         ]);
     }
 
@@ -74,12 +74,9 @@ class AdminController extends AbstractController
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('id' => $id));
 
-        if($figure->isCertified())
-        {
+        if ($figure->isCertified()) {
             $figure->setCertified(0);
-        }
-        else
-        {
+        } else {
             $figure->setCertified(1);
         }
         $entityManager->persist($figure);

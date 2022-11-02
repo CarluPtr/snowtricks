@@ -17,17 +17,14 @@
             {% else %}
                 <a href="{{ path('certif_figure', { 'id': figure.id }) }}" class="btn btn-warning mt-2">Certifier la figure</a>
             {% endif %}
-        {% else %}
         {% endif %}
 
         {% if not is_granted('ROLE_ADMIN') and app.user == figure.user %}
             <a href="{{ path('delete_figure', { 'id': figure.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')" class="btn btn-danger mt-2">Supprimer ma figure</a>
-        {% else %}
         {% endif %}
 
         {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('admin_delete_figure', { 'id': figure.id }) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')" class="btn btn-danger mt-2">Supprimer</a>
-        {% else %}
         {% endif %}
     </div>
 </div>

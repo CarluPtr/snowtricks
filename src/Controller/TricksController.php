@@ -20,7 +20,6 @@ use Twig\Environment;
 
 class TricksController extends AbstractController
 {
-
     /**
      * @Route("/tricks", name="tricks_list")
      */
@@ -29,17 +28,14 @@ class TricksController extends AbstractController
         EntityManagerInterface $entityManager,
         FigureRepository $figureRepository,
         SluggerInterface $slugger
-    ): Response
-    {
-
+    ): Response {
         $figure = new Figure();
 
         $form = $this->createForm(FigureFormType::class, $figure);
         $form->handleRequest($request);
         $user = $this->getUser();
 
-        if ($form->isSubmitted() && $form->isValid()){
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $verification = in_array('ROLE_ADMIN', $user->getRoles());
 
             $figure->setCertified($verification);
@@ -69,8 +65,7 @@ class TricksController extends AbstractController
         string $slug,
         EntityManagerInterface $entityManager,
         CommentRepository $commentRepository
-    ): Response
-    {
+    ): Response {
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('slug' => $slug));
 
@@ -80,7 +75,7 @@ class TricksController extends AbstractController
 
         $user = $this->getUser();
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $comment->setUser($user);
             $comment->setFigure($figure);
             $entityManager->persist($comment);
@@ -103,17 +98,15 @@ class TricksController extends AbstractController
      */
     public function deleteFigure(EntityManagerInterface $entityManager, int $id, Request $request): Response
     {
-
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('id' => $id));
 
         $user = $this->getUser();
 
-        if($user == $figure->getUser()) {
+        if ($user == $figure->getUser()) {
             $entityManager->remove($figure);
             $entityManager->flush();
-        }
-        else {
+        } else {
             throw new \Exception("Vous n'avez pas les permissions pour effectuer cette action.");
         }
         $route = $request->headers->get('referer');
@@ -127,28 +120,24 @@ class TricksController extends AbstractController
         Request $request,
         int $id,
         EntityManagerInterface $entityManager
-    ): Response
-    {
+    ): Response {
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('id' => $id));
 
         $user = $this->getUser();
 
-        if($user == $figure->getUser()) {
+        if ($user == $figure->getUser()) {
             $editFigureForm = $this->createForm(FigureFormType::class, $figure);
             $editFigureForm->handleRequest($request);
 
-            if ($editFigureForm->isSubmitted() && $editFigureForm->isValid()){
-
+            if ($editFigureForm->isSubmitted() && $editFigureForm->isValid()) {
                 $figure->setDatemodif(new \DateTime());
                 $entityManager->persist($figure);
                 $entityManager->flush();
 
                 return $this->redirectToRoute("trick_show", array('slug' => $figure->getSlug()));
-
             }
-        }
-        else{
+        } else {
             throw new \Exception("Vous n'avez pas les permissions pour effectuer cette action.");
         }
 

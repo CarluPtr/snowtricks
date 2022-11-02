@@ -20,6 +20,4 @@ class MainController extends AbstractController
             'figures' => $figureRepository->findBy(array(), array('dateCreation' => 'DESC'))
         ]);
     }
-
-
 }

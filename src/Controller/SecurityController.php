@@ -27,15 +27,14 @@ class SecurityController extends AbstractController
         string $slug,
         CommentRepository $commentRepository,
         FigureRepository $figureRepository
-    ): Response
-    {
+    ): Response {
         $repository = $entityManager->getRepository(User::class);
         $user = $repository->findOneBy(array('username' => $slug));
 
         return $this->render('security/profile.html.twig', [
             'user' => $user,
             'figures' => $figureRepository->findBy(['user' => $user], ['dateCreation' => 'DESC']),
-            'edit-forms' => $commentRepository->findBy(['user' => $user], ['dateCreation' => 'DESC'])
+            'comments' => $commentRepository->findBy(['user' => $user], ['dateCreation' => 'DESC'])
         ]);
     }
 
@@ -46,8 +45,7 @@ class SecurityController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher
-    ): Response
-    {
+    ): Response {
         $user = new User();
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
@@ -78,8 +76,8 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-             return $this->redirectToRoute('main_home');
-         }
+            return $this->redirectToRoute('main_home');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -96,5 +94,4 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
 }
