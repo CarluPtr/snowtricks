@@ -4,14 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Figure;
+use App\Entity\Image;
 use App\Entity\User;
 use App\Form\CommentFormType;
 use App\Form\FigureFormType;
 use App\Form\UserFormType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
+use App\Repository\ImageRepository;
+use App\Services\UploadFile;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,7 +32,8 @@ class TricksController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         FigureRepository $figureRepository,
-        SluggerInterface $slugger
+        SluggerInterface $slugger,
+        UploadFile $uploadFile
     ): Response {
         $figure = new Figure();
 
@@ -36,8 +42,15 @@ class TricksController extends AbstractController
         $user = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $verification = in_array('ROLE_ADMIN', $user->getRoles());
+            foreach($figure->getImages() as $image){
+                $fileName = $uploadFile->uploadImage(
+                    $image->getName(),
+                    $uploadFile::POST_IMAGE_DIR
+                );
+                $image->setName($fileName);
 
+            }
+            $verification = in_array('ROLE_ADMIN', $user->getRoles());
             $figure->setCertified($verification);
             $figure->setUser($user);
             $figure->setSlug(
@@ -64,7 +77,8 @@ class TricksController extends AbstractController
         Request $request,
         string $slug,
         EntityManagerInterface $entityManager,
-        CommentRepository $commentRepository
+        CommentRepository $commentRepository,
+        PaginatorInterface $paginator
     ): Response {
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('slug' => $slug));
@@ -74,6 +88,13 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         $user = $this->getUser();
+
+        $query = $commentRepository->findBy(['figure' => $figure], ['dateCreation' => 'DESC']);
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setUser($user);
@@ -89,7 +110,7 @@ class TricksController extends AbstractController
         return $this->render('tricks/show.html.twig', [
             'figure' => $figure,
             'comment_form' => $form->createView(),
-            'comments' => $commentRepository->findBy(['figure' => $figure], ['dateCreation' => 'DESC'])
+            'pagination' => $pagination
         ]);
     }
 
@@ -116,10 +137,12 @@ class TricksController extends AbstractController
     /**
      * @Route("/edit/figure/{id}", name="edit_figure")
      */
-    public function editComment(
+    public function editFigure(
         Request $request,
         int $id,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UploadFile $uploadFile,
+        ImageRepository $imageRepository
     ): Response {
         $repository = $entityManager->getRepository(Figure::class);
         $figure = $repository->findOneBy(array('id' => $id));
@@ -127,10 +150,20 @@ class TricksController extends AbstractController
         $user = $this->getUser();
 
         if ($user == $figure->getUser()) {
+            $oldImage = $imageRepository->findBy(["figure"=>$figure]);
             $editFigureForm = $this->createForm(FigureFormType::class, $figure);
             $editFigureForm->handleRequest($request);
 
             if ($editFigureForm->isSubmitted() && $editFigureForm->isValid()) {
+                foreach($figure->getImages() as $image){
+                    if($image->getName() instanceof UploadedFile){
+                        $fileName = $uploadFile->uploadImage(
+                            $image->getName(),
+                            $uploadFile::POST_IMAGE_DIR
+                        );
+                        $image->setName($fileName);
+                    }
+                }
                 $figure->setDatemodif(new \DateTime());
                 $entityManager->persist($figure);
                 $entityManager->flush();
@@ -144,6 +177,22 @@ class TricksController extends AbstractController
         return $this->render('edit-forms/edit-figure.html.twig', [
             'edit_figure_form' => $editFigureForm->createView(),
             'comment' => $figure,
+            'images' => $oldImage
         ]);
+    }
+
+
+    /**
+     * @Route("delete/image/{id}", name="delete_image")
+     */
+    public function removeImage(Image $image, EntityManagerInterface $em)
+    {
+        $idFigure = $image->getFigure()->getId();
+        $em->remove($image);
+        $em->flush();
+
+        $this->addFlash("success", "Image correctement supprimée.");
+
+        return $this->redirectToRoute("edit_figure", ["id" => $idFigure]);
     }
 }

@@ -4,11 +4,8 @@
     <section class="my-5 pt-5" id="section-figure">
         <div class="container">
             <div class="row justify-content-around">
-                <div class="col-12 col-md-4 my-2 text-center">
-                    <img src="{{ asset('images/snowboard-' ~ random(1,3) ~ '.png') }}" width="250px" alt="" class="alternative-{{ random(1,2) }}">
-                </div>
-                <div class="col-12 col-md-8 my-2">
-                    <div class="border border-primary rounded">
+                <div class="col-12 my-2">
+                    <div class="">
                         <div class="card__content">
                             {% if app.user == figure.user %}
                             <div class="d-flex justify-content-end mb-2">
@@ -33,9 +30,18 @@
                                 </div>
                                 {% else %}
                                 {% endif %}
-                            <p class="description">{{ figure.description }}</p>
-                            <hr class="bg-primary border-2 border-top border-primary my-4">
-                            <p class="content">{{ figure.content }}</p>
+                            <p class="description">{{ figure.description|nl2br }}</p>
+                            <div class="row">
+                                <div class="col-12 col-md-7 py-5">
+                                    <p class="content">{{ figure.content|nl2br }}</p>
+                                </div>
+                                <div class="col-121 col-md-5">
+                                    {% for image in figure.images %}
+                                        <hr class="bg-primary border-2 border-top border-primary my-4">
+                                        <img src="{{ asset('images/figures/' ~ image.name) }}" alt="">
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -47,10 +53,20 @@
                 {{ form_row(comment_form.content, { 'label': 'Écrivez votre commentaire :' }) }}
                 {{ form_end(comment_form) }}
 
+            {# total items count #}
+            <div class="count">
+                {{ pagination.getTotalItemCount }} commentaires sur cette figure
+            </div>
 
-                {% for comment in comments %}
+                {# table body #}
+                {% for comment in pagination %}
                     {% include 'macros/macro.comment.html.twig' %}
                 {% endfor %}
+
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
         </div>
 
     </section>
