@@ -39,12 +39,29 @@
                                     {{ form_label(figure_form.content) }}
                                     {{ form_widget(figure_form.content) }}
                                 </div>
+                                <div class="col-12">
+                                    <ul id="image-fields-list"
+                                        data-prototype="{{ form_widget(figure_form.images.vars.prototype)|e }}"
+                                        data-widget-tags="{{ '<li></li>'|e }}"
+                                        data-widget-counter="{{ figure_form.images|length }}">
+                                        {% for image in figure_form.images %}
+                                            <li>
+                                                {{ form_errors(image) }}
+                                                {{ form_widget(image) }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+
+                                    <button type="button"
+                                            class="btn btn-primary add-another-collection-widget"
+                                            data-list-selector="#image-fields-list">Ajouter une nouvelle image</button>
+                                </div>
 
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Publier la figure</button>
                             {{ form_end(figure_form) }}
                         </div>
                     </div>

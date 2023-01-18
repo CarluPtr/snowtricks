@@ -6,6 +6,7 @@ use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -68,10 +69,17 @@ class Figure
      */
     private $date_modif;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="figure", cascade={"persist", "remove"})
+     */
+    private $images;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->dateCreation = new \DateTime();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,6 +209,36 @@ class Figure
     public function setDateModif(?\DateTimeInterface $date_modif): self
     {
         $this->date_modif = $date_modif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+            $image->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getFigure() === $this) {
+                $image->setFigure(null);
+            }
+        }
 
         return $this;
     }

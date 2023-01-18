@@ -9,7 +9,7 @@
             <a class="text-dark" href="#">{{ figure.name }}</a>
         </h3>
         <div class="mb-1 text-muted">le {{ figure.datecreation | date('d/m/Y') }} à {{ figure.datecreation | date('H:i') }}</div>
-        <p class="card-text mb-auto">{{ figure.content }}</p>
+        <p class="card-text mb-2">{{ figure.description }}</p>
         <a class="btn btn-primary" href="{{ path('trick_show', {'slug' : figure.slug}) }}">Voir la figure complète</a>
         {% if is_granted('ROLE_ADMIN') %}
             {% if figure.certified %}

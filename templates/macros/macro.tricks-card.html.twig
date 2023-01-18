@@ -10,7 +10,7 @@
                 <strong class="card__certified d-inline-block btn btn-outline-light mb-3">Figure Certifié <i class="fas fa-check-circle"></i></strong>
             {% else %}
             {% endif %}
-            <p class="card__description">{{ figure.description }}</p>
+            <p class="card__description text-truncate">{{ figure.description }}</p>
             <a href="{{ path('trick_show', { 'slug': figure.slug }) }}" class="card__button">En lire plus</a>
         </div>
     </div>
