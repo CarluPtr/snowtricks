@@ -2,8 +2,10 @@
 # Snowtricks
 ## Community website build on Symfony 5
 
-PHP 7.4.10 or above required
+PHP 7.4.10 or above required and node.js
 
 --> composer install
+
+--> npm install
 
 --> yarn watch

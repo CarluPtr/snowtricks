@@ -19,5 +19,6 @@
     "dependencies": {
         "ajax": "^0.0.4",
         "jquery": "^3.6.0"
-    }
+    },
+    "error-ex": "git+https://github.com/Qix-/node-error-ex.git"
 }
