@@ -6,7 +6,7 @@
 <section class="pt-5">
     <div class="container">
         <form action="" method="post" class="row g-3">
-            {% if error %}
+            {% if error is defined %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
