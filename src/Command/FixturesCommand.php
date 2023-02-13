@@ -50,6 +50,20 @@ class FixturesCommand extends Command
     )
     : int
     {
+        $user = new User();
+        $user->setUsername("admin");
+        $user->setEmail("admin@snowtricks.fr");
+        $user->setName("Jon");
+        $user->setFirstName("Doe");
+        $user->setRoles(['ROLE_ADMIN']);
+        $password = "password";
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $user,
+            $password
+        );
+        $user->setPassword($hashedPassword);
+        $this->entityManager->persist($user);
+
         for ($i=0; $i < 10; $i++){
             $user = new User();
             $user->setUsername("user" . $i);
@@ -57,12 +71,8 @@ class FixturesCommand extends Command
             $user->setName("Jean" . $i);
             $user->setFirstName("Fontaine");
             $user->setRoles(['ROLE_USER']);
-            $password = "password";
-            $hashedPassword = $this->passwordHasher->hashPassword(
-                $user,
-                $password
-            );
             $user->setPassword($hashedPassword);
+
             $figure = new Figure();
             $figure->setName("figure" . $i);
             $figure->setDescription("description" .$i);
