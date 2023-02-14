@@ -9,3 +9,21 @@ PHP 7.4.10 or above required and node.js
 --> npm install
 
 --> yarn watch
+
+### Launch the project
+--> symfony serve -d 
+
+(or)
+
+--> symfony server:start
+
+### Command required for generating the fixtures :
+--> symfony console app:fixtures FixturesCommand
+
+All the users from the fixtures have the same password : (""password")
+
+Admin fixtures infos :
+
+username : admin
+
+admin@snowtricks.fr
