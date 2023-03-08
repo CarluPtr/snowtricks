@@ -81,6 +81,7 @@ class FixturesCommand extends Command
             );
             $figure->setCertified(0);
             $figure->setContent("Le contenu blabla numéro " . $i);
+            $figure->setVideo("https://www.youtube.com/embed/9T5AWWDxYM4");
             $figure->setUser($user);
             $this->entityManager->persist($user);
             $this->entityManager->persist($figure);

@@ -7,7 +7,7 @@
     <div class="container">
         <form action="" method="post" class="row g-3">
             {% if error is defined %}
-                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{#          <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div> #}
             {% endif %}
 
             {% if app.user %}
@@ -29,6 +29,9 @@
                 <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
             </div>
         </form>
+        <div class="text-center">
+            <a href="{{ path('app_forgot_password_request') }}">Mot de passé oublié ?</a>
+        </div>
     </div>
 </section>
 {% endblock %}

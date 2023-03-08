@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}SnowTricks - Le site numéro 1 des tricks{% endblock %}</title>
         {% block stylesheets %}
             <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,6 +29,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('tricks_list') }}"><i class="fas fa-snowboarding pe-2"></i>Tricks</a>
                     </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_admin') }}"><i class="fas fa-user pe-2"></i>Admin</a>
+                        </li>
+                    {% else %}
+                    {% endif %}
                 </ul>
                 <ul class="navbar-nav">
                     {% if app.user %}
@@ -38,18 +45,12 @@
                             <a class="nav-link primary-text" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt pe-2"></i>Déconnexion</a>
                         </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('register') }}"><i class="fas fa-user pe-2"></i>Inscription</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt pe-2"></i>Connexion</a>
-                    </li>
-                    {% endif %}
-                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('register') }}"><i class="fas fa-user pe-2"></i>Inscription</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt pe-2"></i>Connexion</a>
                         </li>
-                    {% else %}
                     {% endif %}
                 </ul>
             </div>

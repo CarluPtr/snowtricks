@@ -12,6 +12,34 @@
             {% endif %}
             <p class="card__description text-truncate">{{ figure.description }}</p>
             <a href="{{ path('trick_show', { 'slug': figure.slug }) }}" class="card__button">En lire plus</a>
+
+            {% if app.user == figure.user or is_granted('ROLE_ADMIN') %}
+
+                <div class="py-2">
+                    <div class="btn btn-outline-primary">
+                        <a class="text-decoration-none" href="{{ path('edit_figure', { 'id': figure.id} ) }}">
+                            <i class="fas fa-edit" style="color:white;"></i>
+                        </a>
+                    </div>
+                    {% if not is_granted('ROLE_ADMIN') and app.user == figure.user %}
+                    <div class="btn btn-danger">
+                        <a href="{{ path('delete_figure', { 'id': figure.id }) }}" style="color:white;"  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="btn btn-danger">
+                            <a href="{{ path('admin_delete_figure', { 'id': figure.id }) }}" style="color:white;"  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette figure ?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            {% else %}
+            {% endif %}
         </div>
     </div>
 </div>

@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Figure;
+use App\Form\CategoryFormType;
+use App\Form\UserFormType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,13 +20,34 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="app_admin")
      */
-    public function adminPanel(CommentRepository $commentRepository, FigureRepository $figureRepository): Response
+    public function adminPanel
+    (
+        CommentRepository $commentRepository,
+        FigureRepository $figureRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+        $category = new Category();
+        $form = $this->createForm(CategoryFormType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($category);
+            $entityManager->flush();
+
+            $route = $request->headers->get('referer');
+
+            return $this->redirect($route);
+        }
+
         return $this->render('admin/index.html.twig', [
             'figures' => $figureRepository->findBy(array(), array('dateCreation' => 'DESC')),
-            'comments' => $commentRepository->findBy(array(), array('dateCreation' => 'DESC'))
+            'comments' => $commentRepository->findBy(array(), array('dateCreation' => 'DESC')),
+            'category_form' => $form->createView()
         ]);
     }
 

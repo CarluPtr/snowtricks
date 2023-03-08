@@ -50,6 +50,11 @@ class TricksController extends AbstractController
                 $image->setName($fileName);
 
             }
+            $string     = $figure->getVideo();
+            $search     = '/youtube\.com\/watch\?v=([a-zA-Z0-9]+)/smi';
+            $replace    = "youtube.com/embed/$1";
+            $url = preg_replace($search,$replace,$string);
+            $figure->setVideo($url);
             $verification = in_array('ROLE_ADMIN', $user->getRoles());
             $figure->setCertified($verification);
             $figure->setUser($user);
@@ -149,7 +154,7 @@ class TricksController extends AbstractController
 
         $user = $this->getUser();
 
-        if ($user == $figure->getUser()) {
+        if ($user == $figure->getUser() or in_array('ROLE_ADMIN', $user->getRoles())) {
             $oldImage = $imageRepository->findBy(["figure"=>$figure]);
             $editFigureForm = $this->createForm(FigureFormType::class, $figure);
             $editFigureForm->handleRequest($request);

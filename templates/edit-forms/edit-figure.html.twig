@@ -13,6 +13,10 @@
                     {{ form_widget(edit_figure_form.description) }}
                     {{ form_label(edit_figure_form.content) }}
                     {{ form_widget(edit_figure_form.content) }}
+                    {{ form_label(edit_figure_form.category) }}
+                    {{ form_widget(edit_figure_form.category) }}
+                    {{ form_label(edit_figure_form.video) }}
+                    {{ form_widget(edit_figure_form.video) }}
                     <div class="col-12">
                         <ul id="image-fields-list"
                             data-prototype="{{ form_widget(edit_figure_form.images.vars.prototype)|e }}"
