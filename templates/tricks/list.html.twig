@@ -90,3 +90,12 @@
 
     </section>
 {% endblock %}
+
+{% block extra_js %}
+    {% if status and status == 'logged' %}
+        <script>
+            const myModal = new bootstrap.Modal(document.getElementById('figureModal'))
+            myModal.show();
+        </script>
+    {% endif %}
+{% endblock %}

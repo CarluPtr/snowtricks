@@ -64,14 +64,15 @@ class TricksController extends AbstractController
             $entityManager->persist($figure);
             $entityManager->flush();
 
-
-            return $this->redirectToRoute("trick_show", array('slug' => $figure->getSlug()));
+            $this->addFlash("success", "Figure créée avec succès");
+            return $this->redirectToRoute("main_home");
         }
 
         return $this->render('tricks/list.html.twig', [
             'title' => 'Snow Tricks',
             'figures' => $figureRepository->findBy(array(), array('dateCreation' => 'DESC')),
-            'figure_form' => $form->createView()
+            'figure_form' => $form->createView(),
+            'status' => $request->get('status') ? $request->get('status') : null
         ]);
     }
 
@@ -173,7 +174,8 @@ class TricksController extends AbstractController
                 $entityManager->persist($figure);
                 $entityManager->flush();
 
-                return $this->redirectToRoute("trick_show", array('slug' => $figure->getSlug()));
+                $this->addFlash("success", "Figure modifiée avec succès");
+                return $this->redirectToRoute("main_home");
             }
         } else {
             throw new \Exception("Vous n'avez pas les permissions pour effectuer cette action.");
