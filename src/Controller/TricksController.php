@@ -51,10 +51,12 @@ class TricksController extends AbstractController
 
             }
             $string     = $figure->getVideo();
-            $search     = '/youtube\.com\/watch\?v=([a-zA-Z0-9]+)/smi';
-            $replace    = "youtube.com/embed/$1";
-            $url = preg_replace($search,$replace,$string);
-            $figure->setVideo($url);
+            preg_match('#(\.be/|/embed/|/v/|/watch\?v=)([A-Za-z0-9_-]{5,11})#', $string, $matches);
+            if(isset($matches[2]) && $matches[2] != ''){
+                $YoutubeCode = $matches[2];
+                $replace = "https://www.youtube.com/embed/".$YoutubeCode;
+                $figure->setVideo($replace);
+            }
             $verification = in_array('ROLE_ADMIN', $user->getRoles());
             $figure->setCertified($verification);
             $figure->setUser($user);
@@ -169,6 +171,13 @@ class TricksController extends AbstractController
                         );
                         $image->setName($fileName);
                     }
+                }
+                $string     = $figure->getVideo();
+                preg_match('#(\.be/|/embed/|/v/|/watch\?v=)([A-Za-z0-9_-]{5,11})#', $string, $matches);
+                if(isset($matches[2]) && $matches[2] != ''){
+                    $YoutubeCode = $matches[2];
+                    $replace = "https://www.youtube.com/embed/".$YoutubeCode;
+                    $figure->setVideo($replace);
                 }
                 $figure->setDatemodif(new \DateTime());
                 $entityManager->persist($figure);

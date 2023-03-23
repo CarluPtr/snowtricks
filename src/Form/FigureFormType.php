@@ -24,14 +24,19 @@ class FigureFormType extends AbstractType
             ->add('description')
             ->add('content', TextareaType::class, [
                 'attr' => ['style'=>'overflow:hidden; height:200px'],
-                'required' => true,
                 'label' => 'Contenu',
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
+                'label' => 'Catégorie'
             ])
-            ->add('video')
+            ->add('video', TextType::class, [
+                'label' => 'Youtube Video',
+                'label_attr' => array(
+                    'class' => 'col-sm-6'
+                )
+            ])
             ->add('images', CollectionType::class,array(
                 'label' => 'Images',
                 'entry_type' => ImageFormType::class,

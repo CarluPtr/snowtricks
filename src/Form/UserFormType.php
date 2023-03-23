@@ -20,30 +20,34 @@ class UserFormType extends AbstractType
             ->add('email', EmailType::class, array(
                 'attr' => array(
                     'placeholder' => 'Email'
-                )
+                ),
+                'required' => false
             ))
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
+                'required' => false,
                 'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Répéter le mot de passe']
+                'second_options' => ['label' => 'Répéter le mot de passe'],
             ])
             ->add('name', TextType::class, array(
                 'attr' => array(
                     'placeholder' => 'Nom'
-                )
+                ),
+                'required' => false
             ))
             ->add('firstName', TextType::class, array(
                 'attr' => array(
                     'placeholder' => 'Prénom'
-                )
+                ),
+                'required' => false
             ))
             ->add('username', TextType::class, array(
                 'attr' => array(
                     'placeholder' => 'Pseudo'
-                )
+                ),
+                'required' => false
             ))
             ->add('Submit', SubmitType::class)
         ;

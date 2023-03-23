@@ -14,10 +14,11 @@
                                 </a>
                             </div>
 
-                            {% else %}
                             {% endif %}
                             <p class="card__title fw-bold">{{ figure.name }}</p>
-                            <p>Catégorie : <span class="fw-bold">{{ figure.category.name }}</span></p>
+                            {% if figure.category %}
+                                <p>Catégorie : <span class="fw-bold">{{ figure.category.name }}</span></p>
+                            {% endif %}
                             <p class="card__preci"><span class="fw-light">par </span>
                                 <a href="{{ path('user_profile', { 'slug': figure.user.username }) }}">{{ figure.user.name }} {{ figure.user.firstName }}</a>
                                 <span class="fw-light">
@@ -52,11 +53,12 @@
             </div>
             <h3 class="h3 my-5">Espace de discussion</h3>
 
+            {% if app.user %}
                 {{ form_start(comment_form) }}
                 {{ form_errors(comment_form) }}
                 {{ form_row(comment_form.content, { 'label': 'Écrivez votre commentaire :' }) }}
                 {{ form_end(comment_form) }}
-
+            {% endif %}
             {# total items count #}
             <div class="count">
                 {{ pagination.getTotalItemCount }} commentaires sur cette figure

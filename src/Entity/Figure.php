@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
@@ -25,6 +26,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez renseigner le nom de la figure.")
      */
     private $name;
 
@@ -35,6 +37,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez renseigner la description.")
      */
     private $description;
 
@@ -46,6 +49,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=5000)
+     * @Assert\NotBlank(message="Veuillez renseigner le contenu de la figure.")
      */
     private $content;
 

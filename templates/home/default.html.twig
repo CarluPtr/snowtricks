@@ -35,7 +35,7 @@
                 <h2 class="fw-bold">Les dernières figures</h2>
             </div>
             <div class="row justify-content-around">
-                {% for figure in figures|slice(0,8) %}
+                {% for figure in figures|slice(0,10) %}
                     {% include 'macros/macro.tricks-card.html.twig' %}
                 {% endfor %}
             </div>
