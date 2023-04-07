@@ -35,7 +35,8 @@ class FigureFormType extends AbstractType
                 'label' => 'Youtube Video',
                 'label_attr' => array(
                     'class' => 'col-sm-6'
-                )
+                ),
+                'required' => false
             ])
             ->add('images', CollectionType::class,array(
                 'label' => 'Images',

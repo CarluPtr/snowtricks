@@ -54,7 +54,7 @@ class Figure
     private $content;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure", cascade={"remove"})
      */
     private $comments;
 

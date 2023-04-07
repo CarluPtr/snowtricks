@@ -6,15 +6,15 @@ PHP 7.4.10 or above required and node.js
 
 --> composer install
 
+--> symfony console doctrine:database:create
+
+-->symfony console doctrine:migrations:migrate
+
 --> npm install
 
 --> yarn watch
 
 ### Launch the project
-
---> symfony console doctrine:database:create
-
--->symfony console doctrine:migrations:migrate
 
 --> symfony serve -d 
 
