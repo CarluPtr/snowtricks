@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
@@ -25,6 +26,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez renseigner le nom de la figure.")
      */
     private $name;
 
@@ -35,6 +37,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez renseigner la description.")
      */
     private $description;
 
@@ -46,11 +49,12 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=5000)
+     * @Assert\NotBlank(message="Veuillez renseigner le contenu de la figure.")
      */
     private $content;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure", cascade={"remove"})
      */
     private $comments;
 
@@ -74,6 +78,16 @@ class Figure
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="figure", cascade={"persist", "remove"})
      */
     private $images;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $video;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="figure")
+     */
+    private $category;
 
     public function __construct()
     {
@@ -239,6 +253,30 @@ class Figure
                 $image->setFigure(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?string $video): self
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -15,9 +15,11 @@
             {{ form_errors(figure_form.name) }}
             {{ form_errors(figure_form.description) }}
             {{ form_errors(figure_form.content) }}
+            {{ form_errors(figure_form.video) }}
+            {{ form_errors(figure_form.category) }}
 
             <!-- Modal -->
-            <div class="modal fade my-5" id="figureModal" tabindex="-1" aria-labelledby="figureModalLabel" aria-hidden="true">
+            <div class="modal modal-lg fade my-5" id="figureModal" tabindex="-1" aria-labelledby="figureModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -27,17 +29,25 @@
                         <div class="modal-body">
                             <h2 class="text-center primary-text mb-3">Créer ta propre figure</h2>
                             <div class="row g-3">
-                                <div class="col-12">
+                                <div class="col-6">
                                     {{ form_label(figure_form.name) }}
                                     {{ form_widget(figure_form.name) }}
                                 </div>
-                                <div class="col-12">
+                                <div class="col-6">
                                     {{ form_label(figure_form.description) }}
                                     {{ form_widget(figure_form.description) }}
                                 </div>
                                 <div class="col-12">
                                     {{ form_label(figure_form.content) }}
                                     {{ form_widget(figure_form.content) }}
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(figure_form.category) }}
+                                    {{ form_widget(figure_form.category) }}
+                                </div>
+                                <div class="col-6">
+                                    {{ form_label(figure_form.video) }}
+                                    {{ form_widget(figure_form.video) }}
                                 </div>
                                 <div class="col-12">
                                     <ul id="image-fields-list"
@@ -79,4 +89,13 @@
         </div>
 
     </section>
+{% endblock %}
+
+{% block extra_js %}
+    {% if status and status == 'logged' %}
+        <script>
+            const myModal = new bootstrap.Modal(document.getElementById('figureModal'))
+            myModal.show();
+        </script>
+    {% endif %}
 {% endblock %}

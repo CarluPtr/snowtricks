@@ -7,18 +7,20 @@
                 <div class="col-12 my-2">
                     <div class="">
                         <div class="card__content">
-                            {% if app.user == figure.user %}
+                            {% if app.user == figure.user or is_granted('ROLE_ADMIN') %}
                             <div class="d-flex justify-content-end mb-2">
                                 <a href="{{ path('edit_figure', { 'id': figure.id} ) }}" class="btn btn-primary mt-2">
                                     Modifier figure
                                 </a>
                             </div>
 
-                            {% else %}
                             {% endif %}
                             <p class="card__title fw-bold">{{ figure.name }}</p>
+                            {% if figure.category %}
+                                <p>Catégorie : <span class="fw-bold">{{ figure.category.name }}</span></p>
+                            {% endif %}
                             <p class="card__preci"><span class="fw-light">par </span>
-                                <a href="{{ path('user_profile', { 'slug': figure.user.username }) }}">{{ figure.user.username }}</a>
+                                <a href="{{ path('user_profile', { 'slug': figure.user.username }) }}">{{ figure.user.name }} {{ figure.user.firstName }}</a>
                                 <span class="fw-light">
                                     le {{ figure.datecreation | date('d/m/Y') }} à {{ figure.datecreation | date('H:i') }}
                                 </span>
@@ -34,6 +36,9 @@
                             <div class="row">
                                 <div class="col-12 col-md-7 py-5">
                                     <p class="content">{{ figure.content|nl2br }}</p>
+                                    <div class="container">
+                                        <iframe width="560" height="315" src="{{ figure.video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    </div>
                                 </div>
                                 <div class="col-121 col-md-5">
                                     {% for image in figure.images %}
@@ -48,11 +53,12 @@
             </div>
             <h3 class="h3 my-5">Espace de discussion</h3>
 
+            {% if app.user %}
                 {{ form_start(comment_form) }}
                 {{ form_errors(comment_form) }}
                 {{ form_row(comment_form.content, { 'label': 'Écrivez votre commentaire :' }) }}
                 {{ form_end(comment_form) }}
-
+            {% endif %}
             {# total items count #}
             <div class="count">
                 {{ pagination.getTotalItemCount }} commentaires sur cette figure

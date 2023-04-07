@@ -204,7 +204,7 @@ img {
 */
 
 .card-figure {
-    height: 400px;
+    height: 425px;
     background-image:linear-gradient(to bottom, var(--card-color-1), var(--card-color-2));
     /*background-color: var(--card-color);*/
     border-radius: 1rem;

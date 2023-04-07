@@ -50,6 +50,13 @@ class TricksController extends AbstractController
                 $image->setName($fileName);
 
             }
+            $string     = $figure->getVideo();
+            preg_match('#(\.be/|/embed/|/v/|/watch\?v=)([A-Za-z0-9_-]{5,11})#', $string, $matches);
+            if(isset($matches[2]) && $matches[2] != ''){
+                $YoutubeCode = $matches[2];
+                $replace = "https://www.youtube.com/embed/".$YoutubeCode;
+                $figure->setVideo($replace);
+            }
             $verification = in_array('ROLE_ADMIN', $user->getRoles());
             $figure->setCertified($verification);
             $figure->setUser($user);
@@ -59,14 +66,15 @@ class TricksController extends AbstractController
             $entityManager->persist($figure);
             $entityManager->flush();
 
-
-            return $this->redirectToRoute("trick_show", array('slug' => $figure->getSlug()));
+            $this->addFlash("success", "Figure créée avec succès");
+            return $this->redirectToRoute("main_home");
         }
 
         return $this->render('tricks/list.html.twig', [
             'title' => 'Snow Tricks',
             'figures' => $figureRepository->findBy(array(), array('dateCreation' => 'DESC')),
-            'figure_form' => $form->createView()
+            'figure_form' => $form->createView(),
+            'status' => $request->get('status') ? $request->get('status') : null
         ]);
     }
 
@@ -149,7 +157,7 @@ class TricksController extends AbstractController
 
         $user = $this->getUser();
 
-        if ($user == $figure->getUser()) {
+        if ($user == $figure->getUser() or in_array('ROLE_ADMIN', $user->getRoles())) {
             $oldImage = $imageRepository->findBy(["figure"=>$figure]);
             $editFigureForm = $this->createForm(FigureFormType::class, $figure);
             $editFigureForm->handleRequest($request);
@@ -164,11 +172,19 @@ class TricksController extends AbstractController
                         $image->setName($fileName);
                     }
                 }
+                $string     = $figure->getVideo();
+                preg_match('#(\.be/|/embed/|/v/|/watch\?v=)([A-Za-z0-9_-]{5,11})#', $string, $matches);
+                if(isset($matches[2]) && $matches[2] != ''){
+                    $YoutubeCode = $matches[2];
+                    $replace = "https://www.youtube.com/embed/".$YoutubeCode;
+                    $figure->setVideo($replace);
+                }
                 $figure->setDatemodif(new \DateTime());
                 $entityManager->persist($figure);
                 $entityManager->flush();
 
-                return $this->redirectToRoute("trick_show", array('slug' => $figure->getSlug()));
+                $this->addFlash("success", "Figure modifiée avec succès");
+                return $this->redirectToRoute("main_home");
             }
         } else {
             throw new \Exception("Vous n'avez pas les permissions pour effectuer cette action.");
