@@ -1,0 +1,3 @@
+https://github.com/CarluPtr/snowtricks
+
+codacy : https://app.codacy.com/gh/CarluPtr/snowtricks/
