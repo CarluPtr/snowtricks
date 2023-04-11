@@ -18,7 +18,9 @@ class CommentFormType extends AbstractType
             ->add('content', TextareaType::class, [
                 'required' => true
             ])
-            ->add('Submit', SubmitType::class)
+            ->add('Submit', SubmitType::class, [
+                'label' => 'Envoyer'
+            ])
         ;
     }
 

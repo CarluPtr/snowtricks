@@ -13,7 +13,7 @@
             <p class="card__description text-truncate">{{ figure.description }}</p>
             <a href="{{ path('trick_show', { 'slug': figure.slug }) }}" class="card__button">En lire plus</a>
 
-            {% if app.user == figure.user or is_granted('ROLE_ADMIN') %}
+            {% if app.user or is_granted('ROLE_ADMIN') %}
 
                 <div class="py-2">
                     <div class="btn btn-outline-primary">
