@@ -308,3 +308,9 @@ img {
     transition-delay: .2s;
     opacity: 1;
 }
+
+@media only screen and (max-width: 600px) {
+    iframe{
+        width:300px;
+    }
+}

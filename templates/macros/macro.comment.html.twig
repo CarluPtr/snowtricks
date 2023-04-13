@@ -9,13 +9,13 @@
                 <p class="small mb-0 ms-2">{{ comment.user.username }}</p>
             </div>
             <div class="d-flex flex-row align-items-center">
-                <p class="small text-muted mb-0">{{ comment.datecreation| date }}</p>
+                <p class="small text-muted mb-0">{{ comment.datecreation| date('d/m/Y') }} à {{ comment.datecreation | date('H:i')}}</p>
             </div>
         </div>
         {% if comment.datemodif %}
             <div class="d-flex justify-content-end">
                 <div class="d-flex flex-row align-items-center">
-                    <p class="small mb-0 primary-text"> modifié le {{ comment.datemodif| date }}</p>
+                    <p class="small mb-0 primary-text"> modifié le {{ comment.datemodif| date('d/m/Y') }} à {{ comment.datemodif | date('H:i') }}</p>
                 </div>
             </div>
         {% endif %}

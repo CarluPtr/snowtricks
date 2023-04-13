@@ -15,6 +15,7 @@ class ResetPasswordRequestFormType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'attr' => ['autocomplete' => 'username'],
+                'label' => 'Pseudo',
                 'constraints' => [
                     new NotBlank([
                         'message' => "Rentrez votre nom d'utilisateur",

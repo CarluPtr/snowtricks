@@ -49,7 +49,9 @@ class UserFormType extends AbstractType
                 ),
                 'required' => false
             ))
-            ->add('Submit', SubmitType::class)
+            ->add('Submit', SubmitType::class, [
+                'label' => 'Envoyer'
+            ])
         ;
     }
 
